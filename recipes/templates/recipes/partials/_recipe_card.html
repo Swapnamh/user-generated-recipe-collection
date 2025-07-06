@@ -1,0 +1,46 @@
+{% load static %}
+<div class="card h-100">
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}" style="height: 200px; object-fit: cover;">
+    {% else %}
+        <img src="{% static 'images/default_recipe.jpg' %}" class="card-img-top" alt="No Image Available" style="height: 200px; object-fit: cover;">
+    {% endif %}
+    
+    <div class="card-body">
+        <h5 class="card-title">{{ recipe.title }}</h5>
+
+        <!-- New Category Line -->
+        <p class="text-muted mb-2">
+            <i class="bi bi-tag"></i>
+            {% for cat in recipe.category.all %}
+                {{ cat.name }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+                No category
+            {% endfor %}
+        </p>
+        
+
+        <p class="card-text">{{ recipe.description|truncatewords:20 }}</p>
+
+        <div class="mb-2">
+            {% with avg_rating=recipe.average_rating %}
+                {% for i in "12345" %}
+                    {% if forloop.counter <= avg_rating %}
+                        <i class="bi bi-star-fill text-warning"></i>
+                    {% else %}
+                        <i class="bi bi-star text-warning"></i>
+                    {% endif %}
+                {% endfor %}
+                <span class="ms-1">({{ avg_rating|floatformat:1 }})</span>
+            {% endwith %}
+        </div>
+
+        {% if recipe.is_for_sale %}
+            <span class="badge bg-success">For Sale: ₹{{ recipe.price }}</span>
+        {% endif %}
+    </div>
+
+    <div class="card-footer bg-transparent">
+        <a href="{% url 'recipes:recipe_detail' recipe.id %}" class="btn btn-primary">View Recipe</a>
+    </div>
+</div>

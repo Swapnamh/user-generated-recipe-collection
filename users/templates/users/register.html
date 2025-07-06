@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Register</title>
+
+<style>
+  body, html {
+  margin: 0; padding: 0; height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f3f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+  filter: blur(12px) brightness(0.7);
+  z-index: -1;
+  pointer-events: none;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  width: 600px;
+  max-width: 90vw;
+  padding: 1.6rem 3rem; /* reduced vertical padding */
+  box-sizing: border-box;
+  position: relative; /* keep above background */
+  /*backdrop-filter: none; /* no blur on card itself */
+  background: #fff;
+  /*max-height: 85vh; /* limit height */
+  /*overflow-y: auto; /* scroll if content exceeds */
+  max-height: none;
+  height: auto;
+  animation: fadeInUp 0.8s ease forwards;
+  opacity: 0; /* Start invisible before animation */
+
+}
+.card-header h2 {
+  margin: 0 0 1rem 0; /* less bottom margin */
+  font-weight: 700;
+  font-size: 2.0rem; /* slightly smaller heading */
+  color: #283e66;
+}
+form {
+  width: 100%;
+}
+label.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem; /* smaller gap */
+  color: #4a5a85;
+  user-select: none;
+  font-size: 1rem; /* slightly smaller font */
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.5rem 1.1rem; /* less vertical padding */
+  font-size: 1rem; /* slightly smaller font */
+  border-radius: 12px;
+  border: 2.5px solid #c3cfe2;
+  outline-offset: 3px;
+  transition: border-color 0.3s ease, box-shadow 0.25s ease;
+  color: #2c3e75;
+  box-sizing: border-box;
+}
+input:focus {
+  border-color: #5b7de8;
+  box-shadow: 0 0 10px rgba(91,125,232,0.6);
+  background-color: #fff;
+}
+.is-invalid {
+  border-color: #e04f5f !important;
+  background-color: #ffebec;
+  box-shadow: 0 0 8px rgba(224,79,95,0.5);
+}
+.invalid-feedback {
+  font-size: 0.85rem; /* smaller */
+  color: #e04f5f;
+  margin-top: 0.3rem; /* less gap */
+  user-select: none;
+}
+.mb-3 {
+  margin-bottom: 1rem; /* less vertical margin */
+}
+.password-wrapper {
+  position: relative;
+}
+.password-wrapper input {
+  padding-right: 3.8rem;
+}
+.toggle-password {
+  position: absolute;
+  right: 1rem;
+  top: 75%; /* adjust as needed */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e70bf;
+  transition: color 0.3s ease;
+  user-select: none;
+  outline-offset: 2px;
+  font-size: 1.3rem;
+  line-height: 1;
+  height: 28px;
+  width: 28px;
+  user-select: none;
+}
+.toggle-password:hover {
+  color: #0d5ba5;
+}
+.toggle-password svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  transition: fill 0.3s ease;
+  pointer-events: none;
+}
+.toggle-password.active svg path.eye-open { display: none; }
+.toggle-password.active svg path.eye-closed { display: block; }
+.toggle-password svg path.eye-closed { display: none; }
+
+.forgot-password {
+  text-align: center;
+  margin-top: -0.5rem; /* reduced gap */
+  margin-bottom: 1.2rem;
+}
+.forgot-password a {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #5b7de8;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+.forgot-password a:hover {
+  color: #3a59b7;
+  text-decoration: underline;
+}
+button[type="submit"] {
+  width: 100%;
+  background: #5b7de8;
+  border: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.15rem; /* slightly smaller */
+  padding: 0.65rem 0; /* less vertical padding */
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+button[type="submit"]:hover {
+  background: #3a59b7;
+  box-shadow: 0 8px 20px rgba(58,89,183,0.6);
+}
+.text-center {
+  margin-top: 1.2rem; /* less top margin */
+  font-size: 0.95rem; /* smaller */
+  color: #4a5a85;
+  user-select: none;
+}
+.text-center a {
+  color: #5b7de8;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+.text-center a:hover {
+  color: #3a59b7;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 90vw;
+    padding: 1.2rem 1.6rem; /* match smaller padding */
+    
+  }
+}
+
+
+</style>
+
+</head>
+<body>
+
+<div class="card" role="main" aria-labelledby="registerTitle">
+  <div class="card-header">
+    <h2 id="registerTitle">Register</h2>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags == 'success' %}
+        <div role="alert" style="margin-bottom:1rem; color:#2e7d32; font-weight:600;">
+          {{ message }}
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" novalidate aria-describedby="registerFormInstructions">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="id_username" class="form-label">Username</label>
+      <input
+        type="text"
+        id="id_username"
+        name="username"
+        value="{{ form.username.value|default_if_none:'' }}"
+        class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+        required
+        aria-required="true"
+        aria-invalid="{% if form.username.errors %}true{% else %}false{% endif %}"
+        autocomplete="username"
+      />
+      {% for error in form.username.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      <label for="id_email" class="form-label">Email</label>
+      <input
+        type="email"
+        id="id_email"
+        name="email"
+        value="{{ form.email.value|default_if_none:'' }}"
+        class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+        required
+        aria-required="true"
+        aria-invalid="{% if form.email.errors %}true{% else %}false{% endif %}"
+        autocomplete="email"
+      />
+      {% for error in form.email.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3 password-wrapper">
+      <label for="id_password1" class="form-label">Password</label>
+      <input
+        type="password"
+        id="id_password1"
+        name="password1"
+        class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+        required
+        aria-required="true"
+        aria-invalid="{% if form.password1.errors %}true{% else %}false{% endif %}"
+        autocomplete="new-password"
+      />
+      <button type="button" class="toggle-password" aria-label="Show password">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="eye-open" d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7z"/>
+          <circle cx="12" cy="12" r="3"/>
+          <path class="eye-closed" d="M1 1l22 22" stroke="#5b7de8" stroke-width="2" stroke-linecap="round" style="display:none;"/>
+        </svg>
+      </button>
+      {% for error in form.password1.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3 password-wrapper">
+      <label for="id_password2" class="form-label">Password Confirmation</label>
+      <input
+        type="password"
+        id="id_password2"
+        name="password2"
+        class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+        required
+        aria-required="true"
+        aria-invalid="{% if form.password2.errors %}true{% else %}false{% endif %}"
+        autocomplete="new-password"
+      />
+      <button type="button" class="toggle-password" aria-label="Show password confirmation">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="eye-open" d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7z"/>
+          <circle cx="12" cy="12" r="3"/>
+          <path class="eye-closed" d="M1 1l22 22" stroke="#5b7de8" stroke-width="2" stroke-linecap="round" style="display:none;"/>
+        </svg>
+      </button>
+      {% for error in form.password2.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="forgot-password">
+      <a href="{% url 'users:password_reset_request' %}">Forgot password?</a>
+    </div>
+
+    <button type="submit" aria-label="Register account">Register</button>
+  </form>
+
+  <div class="text-center" aria-live="polite">
+    <p>Already have an account? <a href="{% url 'users:login' %}">Login here</a></p>
+  </div>
+</div>
+
+<script>
+  // Password show/hide toggle
+  document.querySelectorAll('.toggle-password').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.previousElementSibling;
+      const eyeOpen = btn.querySelector('svg path.eye-open');
+      const eyeClosed = btn.querySelector('svg path.eye-closed');
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.classList.add('active');
+        btn.setAttribute('aria-label', 'Hide password');
+        if (eyeOpen && eyeClosed) {
+          eyeOpen.style.display = 'none';
+          eyeClosed.style.display = 'block';
+        }
+      } else {
+        input.type = 'password';
+        btn.classList.remove('active');
+        btn.setAttribute('aria-label', 'Show password');
+        if (eyeOpen && eyeClosed) {
+          eyeOpen.style.display = 'block';
+          eyeClosed.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  // Form validation
+  document.querySelector('form').addEventListener('submit', function (e) {
+    const usernameInput = document.getElementById('id_username');
+    const emailInput = document.getElementById('id_email');
+
+    const username = usernameInput.value.trim();
+    const email = emailInput.value.trim();
+
+    let valid = true;
+
+    // Username: only letters
+    const usernamePattern = /^[A-Za-z]+$/;
+    if (!usernamePattern.test(username)) {
+      showError(usernameInput, "Username should contain letters only.");
+      valid = false;
+    } else {
+      removeError(usernameInput);
+    }
+
+    // Email: valid email format and ending with .com/.net/.org etc.
+    const emailPattern = /^[^\s@]+@[^\s@]+\.(com|org|net|in|co\.in|edu)$/;
+    if (!emailPattern.test(email)) {
+      showError(emailInput, "Enter a valid email address ending like .com, .org, etc.");
+      valid = false;
+    } else {
+      removeError(emailInput);
+    }
+
+    if (!valid) e.preventDefault(); // Stop form submission if invalid
+  });
+
+  // Function to show error
+  function showError(input, message) {
+    removeError(input);
+    input.classList.add('is-invalid');
+    const error = document.createElement('div');
+    error.className = 'invalid-feedback';
+    error.innerText = message;
+    input.insertAdjacentElement('afterend', error);
+  }
+
+  // Function to remove old error
+  function removeError(input) {
+    input.classList.remove('is-invalid');
+    const next = input.nextElementSibling;
+    if (next && next.classList.contains('invalid-feedback')) {
+      next.remove();
+    }
+  }
+</script>
+
+
+</body>
+</html>

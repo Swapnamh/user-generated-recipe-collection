@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<style>
+    /* Include all the styles from your previous user profile */
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    .bi-person-circle {
+        color: #5c7cfa;
+        transition: transform 0.3s ease;
+    }
+    .bi-person-circle:hover {
+        transform: scale(1.1);
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 class="mb-4 fw-bold">{{ profile_user.username }}'s Profile</h1>
+
+    <div class="card shadow-sm mb-5 p-4 rounded-4">
+        <div class="d-flex align-items-center">
+            {% if profile.profile_pic %}
+                <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+            {% else %}
+                <i class="bi bi-person-circle text-primary" style="font-size: 4rem;"></i>
+            {% endif %}
+            <div class="ms-3">
+                <h4 class="fw-bold mb-1">{{ profile_user.username }}</h4>
+                <p class="text-muted mb-1">{{ profile_user.email }}</p>
+                {% if profile.bio %}
+                    <p class="mb-1">{{ profile.bio }}</p>
+                {% endif %}
+                <div class="text-warning">
+                    {% with avg_rating=profile_user.get_average_rating %}
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= avg_rating %}
+                                <i class="bi bi-star-fill"></i>
+                            {% else %}
+                                <i class="bi bi-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span class="text-dark ms-2 fw-semibold">({{ avg_rating|floatformat:1 }})</span>
+                    {% endwith %}
+                </div>
+            </div>
+
+            {% if request.user == profile_user %}
+                <div class="ms-auto">
+                    <a href="{% url 'recipes:edit_profile' %}" class="btn btn-outline-secondary rounded-pill">Edit Profile</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row profile-section">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="mb-0">My Recipes</h3>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'recipes:submit_recipe' %}" class="btn btn-primary mb-3">Add New Recipe</a>
+
+                    {% if user_recipes %}
+                        <div class="row">
+                            {% for recipe in user_recipes %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="card shadow-sm h-100 border-0 rounded-4">
+                                        <img src="{{ recipe.image.url }}" class="card-img-top rounded-top-4" style="height: 200px; object-fit: cover;" alt="{{ recipe.title }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold">{{ recipe.title }}</h5>
+                                            <p class="text-muted small">{{ recipe.created_at|date:"M d, Y" }}</p>
+                                            <a href="{% url 'recipes:recipe_detail' recipe.pk %}" class="btn btn-outline-primary rounded-pill w-100">View Recipe</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">You haven't created any recipes yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Purchased Recipes</h3>
+                </div>
+                <div class="card-body">
+                    {% if purchased_recipes %}
+                        <div class="list-group">
+                            {% for recipe in purchased_recipes %}
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{ recipe.title }}</h5>
+                                    <small class="text-muted">By {{ recipe.author.username }}</small>
+                                </div>
+                                <p class="mb-1">{{ recipe.description|truncatewords:15 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small>Purchased: {{ recipe.purchase_set.first.purchased_at|date:"M d, Y" }}</small>
+                                    <a href="{% url 'recipes:recipe_detail' recipe.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">You haven't purchased any recipes yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

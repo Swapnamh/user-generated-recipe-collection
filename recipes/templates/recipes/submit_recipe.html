@@ -1,0 +1,68 @@
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Submit Recipe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+<body>
+
+    {% include 'recipes/partials/navbar_no_submit.html' %}
+
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-header bg-primary text-white rounded-top-4">
+                        <h2 class="mb-0 fw-bold text-center">Create a New Recipe</h2>
+                    </div>
+                    <div class="card-body p-5">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="mb-4">
+                                {# ✅ Render all fields except image & video #}
+                                {% for field in form %}
+                                    {% if field.name != 'image' and field.name != 'video' %}
+                                        {{ field|as_crispy_field }}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {# ✅ Render image field #}
+                                {% if form.image %}
+                                <label for="{{ form.image.id_for_label }}" class="form-label fw-semibold">Upload an Image</label>
+                                {{ form.image }}
+                                {% if form.image.errors %}
+                                    <div class="text-danger small mt-1">{{ form.image.errors|striptags }}</div>
+                                {% endif %}
+                                <br><br>
+                                {% endif %}
+
+                                {# ✅ Render video field after image #}
+                                {% if form.video %}
+                                <label for="{{ form.video.id_for_label }}" class="form-label fw-semibold">Upload a Recipe Video (optional)</label>
+                                {{ form.video }}
+                                {% if form.video.errors %}
+                                    <div class="text-danger small mt-1">{{ form.video.errors|striptags }}</div>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="submit" name="submit_type" value="publish" class="btn btn-success rounded-pill px-4 py-2 me-2">Submit Recipe</button>
+                                <a href="{% url 'recipes:home' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

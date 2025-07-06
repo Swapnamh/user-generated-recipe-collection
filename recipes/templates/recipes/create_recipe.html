@@ -1,0 +1,222 @@
+
+{% block content %}
+<div class="recipe-create-container">
+    <h1>Share Your Recipe</h1>
+    
+    <form method="post" enctype="multipart/form-data" class="recipe-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label>Recipe Title</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div class="text-danger small">{{ form.title.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Description</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="text-danger small">{{ form.description.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Price (₹)</label>
+            {{ form.price }}
+            {% if form.price.errors %}
+                <div class="text-danger small">{{ form.price.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group form-check">
+            {{ form.is_for_sale }}
+            <label class="form-check-label" for="{{ form.is_for_sale.id_for_label }}">Is this recipe for sale?</label>
+            {% if form.is_for_sale.errors %}
+                <div class="text-danger small">{{ form.is_for_sale.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Category</label>
+            {{ form.category }}
+            {% if form.category.errors %}
+                <div class="text-danger small">{{ form.category.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Recipe Image</label>
+            <div class="image-upload">
+                {{ form.image }}
+            </div>
+            {% if form.image.errors %}
+                <small class="text-danger">{{ form.image.errors.0 }}</small>
+            {% endif %}
+        </div>
+
+        <!-- ✅ New Video Upload Field (optional) -->
+        {% if form.video %}
+        <div class="form-group">
+            <label>Recipe Video (optional)</label>
+            <div class="image-upload">
+                {{ form.video }}
+            </div>
+            {% if form.video.errors %}
+                <small class="text-danger">{{ form.video.errors.0 }}</small>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+             <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" name="publish" class="btn btn-primary">Publish Recipe</button>
+            <button type="submit" name="draft" class="btn btn-secondary">Save as Draft</button>
+            <a href="{% url 'recipes:home' %}" class="btn btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Base Styles */
+    .recipe-create-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+    
+    .recipe-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 1.5rem;
+    }
+    
+    .form-row .form-group {
+        flex: 1;
+    }
+    
+    input, textarea, select {
+        padding: 0.75rem;
+        border: 2px solid #444;        /* darker and thicker border */
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #1a73e8;         /* bright blue border on focus */
+        box-shadow: 0 0 5px rgba(26, 115, 232, 0.5);
+    }
+    
+    textarea {
+        min-height: 150px;
+    }
+    
+    .image-upload {
+        border: 2px dashed #444;      /* darker dashed border */
+        padding: 1.5rem;
+        text-align: center;
+        border-radius: 6px;
+    }
+    
+    /* Style for the is_for_sale checkbox container */
+    .form-check {
+        display: flex;
+        align-items: left;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    
+    /* Style the checkbox input itself */
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #444;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .form-check-input:checked {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+    }
+    
+    .form-check-label {
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        flex: 1;
+        text-align: center;
+        transition: all 0.2s;
+    }
+    
+    .btn-primary {
+        background: #4CAF50;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: #2196F3;
+        color: white;
+    }
+    
+    .btn-outline {
+        background: white;
+        border: 1px solid #ddd;
+        color: #333;
+    }
+    
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+        .recipe-create-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .form-row {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}

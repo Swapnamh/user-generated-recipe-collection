@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Unsubscribe from Newsletter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .unsubscribe-container {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #ffe5e5;
+            color: #c0392b;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+        }
+
+        .back-home-btn {
+         display: inline-block;
+         margin-top: 20px;
+         text-decoration: none;
+         color: #007bff;
+         font-weight: 500;
+         transition: color 0.3s ease;
+        }
+
+       .back-home-btn:hover {
+        color: #0056b3;
+        text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="unsubscribe-container">
+        <h1>Unsubscribe from our Newsletter</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="email">Enter your email to unsubscribe:</label>
+            <input type="email" name="email" id="email" required />
+            <button type="submit">Unsubscribe</button>
+        </form>
+        <a href="{% url 'recipes:home' %}" class="back-home-btn">← Back to Home</a>
+
+    </div>
+</body>
+</html>

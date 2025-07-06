@@ -1,0 +1,23 @@
+/* static/css/styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #35424a;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header img {
+    height: 60px;
+}
+
+main {
+    padding: 20px;
+}

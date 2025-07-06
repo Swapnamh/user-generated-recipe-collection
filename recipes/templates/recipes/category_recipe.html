@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }} Recipes{% endblock %}
+{% block content %}
+<h2 class="mb-4">{{ category.name }} Recipes</h2>
+<div class="row">
+    {% for recipe in recipes %}
+        <div class="col-md-4 mb-4">
+            {% include 'recipes/partials/_recipe_card.html' %}
+        </div>
+    {% empty %}
+        <p class="text-muted">No recipes in this category yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

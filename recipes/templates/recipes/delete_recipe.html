@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Recipe{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-danger text-white text-center rounded-top-4 py-4">
+                <h2 class="mb-0 fw-bold">Delete Recipe</h2>
+            </div>
+            <div class="card-body p-5 bg-light">
+                <p class="fs-5 mb-4 text-center">Are you sure you want to delete <strong>"{{ recipe.title }}"</strong>?<br> This action cannot be undone.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button type="submit" class="btn btn-danger rounded-pill px-4 py-2 me-2 shadow-sm">Delete</button>
+                        <a href="{% url 'recipes:recipe_detail' recipe.id %}" class="btn btn-outline-secondary rounded-pill px-4 py-2 shadow-sm">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

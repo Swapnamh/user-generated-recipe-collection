@@ -1,0 +1,33 @@
+<style>
+    /* Enhanced visible border and focus effect */
+    form.d-flex input.form-control {
+        border: 2px solid #0d6efd; /* Bootstrap primary blue */
+        border-radius: 5px;
+        transition: box-shadow 0.3s ease-in-out;
+    }
+    form.d-flex input.form-control:focus {
+        border-color: #0a58ca;
+        box-shadow: 0 0 6px rgba(13, 110, 253, 0.5);
+    }
+    </style>
+    
+    <form action="{% url 'recipes:home' %}" method="get" class="d-flex">
+        <input type="text" 
+               name="q" 
+               class="form-control me-2" 
+               placeholder="Search recipes..." 
+               value="{{ request.GET.q }}"
+               list="search-history"
+               aria-label="Search">
+    
+        <datalist id="search-history">
+            {% for query in request.session.search_history|default:"" %}
+            <option value="{{ query }}">
+            {% endfor %}
+        </datalist>
+    
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i> Search
+        </button>
+    </form>
+    

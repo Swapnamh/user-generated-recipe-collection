@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+    .search-form .form-control {
+        border-radius: 20px;
+        padding: 10px 20px;
+        border: 2px solid #0d6efd;
+        transition: all 0.3s ease;
+    }
+
+    .search-form .form-control:focus {
+        border-color: #0a58ca;
+        box-shadow: 0 0 6px rgba(13, 110, 253, 0.5);
+    }
+
+    .user-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 1px solid #ccc;
+    }
+
+    .search-history-link {
+        text-decoration: none;
+        color: #0d6efd;
+    }
+
+    .search-history-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<!-- Search Bar -->
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto search-form">
+        <form action="{% url 'recipes:home' %}" method="get" class="d-flex">
+            <input type="text" 
+                   name="q" 
+                   class="form-control me-2" 
+                   placeholder="Search recipes or users..." 
+                   value="{{ query }}"
+                   list="search-history"
+                   aria-label="Search">
+
+            
+                {% if request.session.search_history %}
+                   <datalist id="search-history">
+                       {% for item in request.session.search_history %}
+                           <option value="{{ item }}">
+                       {% endfor %}
+                   </datalist>
+               {% endif %}
+
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i> Search
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Search Results -->
+{% if query %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Search Results for "{{ query }}"</h2>
+        {% if featured_recipes %}
+            <a href="{% url 'recipes:all_recipes' %}" class="btn btn-outline-primary btn-sm">View All</a>
+        {% endif %}
+    </div>
+
+    {% if featured_recipes %}
+        <div class="row">
+            {% for recipe in featured_recipes %}
+                <div class="col-md-4 mb-4">
+                    {% include 'recipes/partials/_recipe_card.html' %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No recipes found for "<strong>{{ query }}</strong>".</p>
+    {% endif %}
+
+    {% if search_users %}
+    <div class="mt-4">
+        <h4>Matching Users</h4>
+        <ul class="list-group">
+            {% for user in search_users %}
+            <li class="list-group-item">
+                <a href="{% url 'recipes:user_profile' user.id %}" class="user-card">
+                    <img src="{% static 'images/default_profile.png' %}" alt="Avatar" class="user-avatar">
+                    {{ user.username }}
+                </a>
+            </li>
+            
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{% else %}
+    <!-- Featured Recipes -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Featured Recipes</h2>
+        <a href="{% url 'recipes:all_recipes' %}" class="btn btn-outline-primary btn-sm">View All</a>
+    </div>
+
+    <div class="row">
+        {% for recipe in featured_recipes %}
+            <div class="col-md-4 mb-4">
+                {% include 'recipes/partials/_recipe_card.html' %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Categories -->
+    <h2 class="mb-4 mt-5">Categories</h2>
+    <div class="row">
+        {% for category in recipes_by_category.keys %}
+            <div class="col-md-3 mb-3">
+                <a href="{% url 'recipes:category_recipes' category.id %}" class="btn btn-outline-dark w-100">
+                    {{ category.name }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
