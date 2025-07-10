@@ -20,7 +20,7 @@ A full-featured Django-based web application that allows users to **create**, an
 ## 🖼️ Screenshots
 
 ### 🏠 Home Page
-![Home Page](screenshots/home page.png)
+![Home Page](screenshots/home_page.png)
 
 ### 🔐 Login Page
 ![Login Page](screenshots/users_login.png)
@@ -42,6 +42,7 @@ A full-featured Django-based web application that allows users to **create**, an
 
 ### ✅ Password Reset Done
 ![Reset Done](screenshots/users_password-reset_done.png)
+
 ---
 
 ## 🛠️ Tech Stack
