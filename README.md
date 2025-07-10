@@ -20,7 +20,7 @@ A full-featured Django-based web application that allows users to **create**, an
 ## 🖼️ Screenshots
 
 ### 🏠 Home Page
-![Home Page](screenshots/home_page.png)
+![Login Page](screenshots/homepage.png)
 
 ### 🔐 Login Page
 ![Login Page](screenshots/users_login.png)
