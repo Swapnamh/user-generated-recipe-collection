@@ -61,32 +61,23 @@ A full-featured Django-based web application that allows users to **create**, an
 git clone https://github.com/Swapnamh/user-generated-recipe-collection.git
 cd user-generated-recipe-collection
 2. Set Up Virtual Environment
-bash
-Copy
-Edit
+
 python -m venv venv
 venv\Scripts\activate  # On Windows
+
 3. Install Dependencies
-bash
-Copy
-Edit
 pip install -r requirements.txt
+
 4. Run Migrations
-bash
-Copy
-Edit
 python manage.py makemigrations
 python manage.py migrate
+
 5. Create Superuser (optional)
-bash
-Copy
-Edit
 python manage.py createsuperuser
+
 6. Run the Development Server
-bash
-Copy
-Edit
 python manage.py runserver
+
 Open your browser and visit:
 📍 http://127.0.0.1:8000/
 
